@@ -6,6 +6,12 @@ class Tic_tac_toe():
         self.grille = np.zeros((3,3))
         self.player = -1 #1 or -1
     
+    def next_move(self, x, y):
+        x, y = int(x), int(y)
+        if self.grille[x,y] == 0:
+            self.grille[x, y] = self.player
+            self.player *= -1
+    
     def show(self):
 
         symb = lambda i, j: ' ' if self.grille[i,j] == 0 else ('X' if self.grille[i,j] == 1 else 'O')
@@ -21,15 +27,15 @@ class Tic_tac_toe():
         """
         for k in range(3):
             if np.sum(self.grille[k,:]) == 3 or np.sum(self.grille[:,k]) == 3:
-                return 1
+                return 'X'
             if np.sum(self.grille[k,:]) == -3 or np.sum(self.grille[:,k]) == -3:
-                return -1
-        diag1 = self.grille[1,1]+self.grille[2,2]+self.grille[3,3]
-        diag2 = self.grille[1,3]+self.grille[2,2]+self.grille[3,1]
+                return 'O'
+        diag1 = self.grille[0,0]+self.grille[1,1]+self.grille[2,2]
+        diag2 = self.grille[0,2]+self.grille[1,1]+self.grille[2,0]
         if diag1 == 3 or diag2 == 3:
-            return 1
+            return 'X'
         if diag1 == -3 or diag2 == -3:
-            return -1
+            return 'O'
         return 0
     
     def is_finished(self):
@@ -42,6 +48,7 @@ if __name__ == "__main__":
     game = Tic_tac_toe()
     game.show()
     while not game.is_finished():
-        game.next_move(input())
+        x, y = input().split(' ')
+        game.next_move(x, y)
         game.show()
-    game.winner()
+    print("The winner is:", game.winner())
